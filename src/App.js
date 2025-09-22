@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
+  const [userId, setUserId] = useState("123"); // fake login for now
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/tasks/${userId}`).then(res => {
+      setTasks(res.data);
+    });
+  }, [userId]);
+
+  const addTask = async () => {
+    const res = await axios.post("http://localhost:5000/tasks", {
+      userId,
+      text: task,
+    });
+    setTasks([...tasks, res.data]);
+    setTask("");
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>MERN To-Do App</h1>
+      <input
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
+        placeholder="Enter task"
+      />
+      <button onClick={addTask}>Add</button>
+      <ul>
+        {tasks.map((t) => (
+          <li key={t._id}>{t.text}</li>
+        ))}
+      </ul>
     </div>
   );
 }
