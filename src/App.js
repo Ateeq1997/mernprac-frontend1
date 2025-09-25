@@ -6,20 +6,21 @@ function App() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    axios.get(`http://localhost:5000/tasks/${userId}`).then(res => {
-      setTasks(res.data);
-    });
-  }, [userId]);
+ useEffect(() => {
+  axios.get(`${process.env.REACT_APP_API_URL}/tasks/${userId}`).then(res => {
+    setTasks(res.data);
+  });
+}, [userId]);
 
-  const addTask = async () => {
-    const res = await axios.post("http://localhost:5000/tasks", {
-      userId,
-      text: task,
-    });
-    setTasks([...tasks, res.data]);
-    setTask("");
-  };
+const addTask = async () => {
+  const res = await axios.post(`${process.env.REACT_APP_API_URL}/tasks`, {
+    userId,
+    text: task,
+  });
+  setTasks([...tasks, res.data]);
+  setTask("");
+};
+
 
   return (
     <div>
