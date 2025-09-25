@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
-  const [userId, setUserId] = useState("123"); // fake login for now
+  const [userId] = useState("");
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
 
